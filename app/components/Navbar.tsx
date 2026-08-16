@@ -1,32 +1,42 @@
 "use client";
 
 import { Briefcase, MapPin, Sun, Moon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+
+const emptySubscribe = () => () => {};
 
 const Navbar = () => {
-  const router = useRouter();
+  const pathname = usePathname();
   const { theme, setTheme, systemTheme } = useTheme();
 
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   if (!mounted) return null;
 
   const currentTheme = theme === "system" ? systemTheme : theme;
 
-  const navButton =
+  const navButton = (path: string) =>
     `text-sm px-2 py-1 rounded-xl cursor-pointer transition-all duration-300 ` +
-    (currentTheme === "dark"
-      ? "hover:bg-white hover:text-black"
-      : "hover:bg-black hover:text-white");
+    (pathname === path
+      ? currentTheme === "dark"
+        ? "bg-white text-black"
+        : "bg-black text-white"
+      : currentTheme === "dark"
+        ? "hover:bg-white hover:text-black"
+        : "hover:bg-black hover:text-white");
 
   return (
     <div className="flex flex-wrap gap-4 px-4 md:px-2 justify-between items-center w-full">
       <div className="flex gap-2 items-center min-w-[200px]">
-        <img
+        <Image
           src="/profilepic.png"
+          alt="Mujeeb Rahman"
+          width={80}
+          height={80}
           className="rounded-full object-cover w-[60px] h-[60px] md:w-[80px] md:h-[80px]"
         />
 
@@ -49,20 +59,25 @@ const Navbar = () => {
 
       {/* RIGHT SECTION */}
       <div className="flex gap-2 items-center flex-wrap justify-end">
-        <div className={navButton} onClick={() => router.replace("/")}>
+        <Link className={navButton("/")} href="/">
           Home
-        </div>
+        </Link>
 
-        <div className={navButton} onClick={() => router.replace("/works")}>
+        <Link className={navButton("/works")} href="/works">
           Works
-        </div>
+        </Link>
 
-        <div className={navButton} onClick={() => router.replace("/contact")}>
+        <Link className={navButton("/blog")} href="/blog">
+          Blog
+        </Link>
+
+        <Link className={navButton("/contact")} href="/contact">
           Contacts
-        </div>
+        </Link>
 
         <button
           onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
+          aria-label={`Switch to ${currentTheme === "dark" ? "light" : "dark"} theme`}
           className={
             `p-1 rounded-xl transition-all duration-300 cursor-pointer ` +
             (currentTheme === "dark" ? "hover:bg-white" : "hover:bg-black")

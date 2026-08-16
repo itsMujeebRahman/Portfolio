@@ -11,8 +11,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Mujeeb Rahman",
-  description: "Futuristic HUD Portfolio",
+  title: "Mujeeb Rahman | Full Stack Software Developer",
+  description:
+    "Portfolio of Mujeeb Rahman, a full stack software developer building reliable web and mobile applications with React, Next.js, Node.js, NestJS, and React Native.",
 };
 
 export default function RootLayout({

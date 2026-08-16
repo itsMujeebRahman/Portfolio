@@ -2,13 +2,13 @@
 
 import { Github, Linkedin, Mail, Twitter } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+
+const emptySubscribe = () => () => {};
 
 export default function ContactPage() {
   const { theme, systemTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   if (!mounted) return null;
 
   const currentTheme = theme === "system" ? systemTheme : theme;
@@ -33,6 +33,7 @@ export default function ContactPage() {
             href="https://github.com/itsMujeebRahman"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="GitHub profile"
             className={`${hoverClass} transition-colors duration-300`}
           >
             <Github size={24} />
@@ -42,6 +43,7 @@ export default function ContactPage() {
             href="https://linkedin.com/in/mujeebrahman8943"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="LinkedIn profile"
             className={`${hoverClass} transition-colors duration-300`}
           >
             <Linkedin size={24} />
@@ -51,6 +53,7 @@ export default function ContactPage() {
             href="https://mail.google.com/mail/?view=cm&fs=1&to=mujeebrahman8943@gmail.com"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Send an email"
             className={`${hoverClass} transition-colors duration-300`}
           >
             <Mail size={24} />
@@ -60,6 +63,7 @@ export default function ContactPage() {
             href="https://x.com/itsMujeebRahman"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="X profile"
             className={`${hoverClass} transition-colors duration-300`}
           >
             <Twitter size={24} />
